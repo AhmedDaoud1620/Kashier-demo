@@ -35,16 +35,15 @@ class Kashier
             "isSuspendedPayment"=>true,
             "description"> "order from Kashier Demo",
             "invoiceReferenceId"> $order->id,
-            //TODO reduce the order items array into this form
-            "invoiceItems"=> [
-                [
-                    "description"=> "invoice item description",
-                    "quantity"=> 5,
-                    "itemName"=> "laptop",
-                    "unitPrice"=> 10,
-                    "subTotal"=> 50
-                ]
-            ],
+            "invoiceItems"=> $order->orderItems()->map(function ($item) {
+                return [
+                    'description' => $item->product()->description,
+                    'quantity' => $item->quantity,
+                    'itemName' => $item->product()->name,
+                    'unitPrice' => $item->product()->price,
+                    'subTotal' => $item->product()->price * $item->quantity,
+                ];
+            }),
             "state"=> "submitted",
             "currency"=> $this->currency
 
@@ -66,7 +65,6 @@ class Kashier
 
         $body = [
             "subDomainUrl"=> env('SUB_DOMAIN_URL'),
-            //TODO add invoice ID to payments
             "urlIdentifier"=> $order->payment()->invoice_id,
             "customerName"=> $order->user()->name,
             "storeName"=> env('STORE_NAME'),

@@ -1,9 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Kashier Store</a>
+    <a class="navbar-brand mx-2" href="/">Kashier Store</a>
     <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="/cart">Products</a>
-        </li>
         <li class="nav-item">
             <a class="nav-link" href="/orders">Orders</a>
         </li>
@@ -24,7 +21,7 @@
             </li>
         @endif
         <li class="nav-item">
-            <a class="nav-link" href="/cart">Cart</a>
+            <a class="nav-link" href="{{ route('cart') }}">Cart</a>
         </li>
     </ul>
 </nav>

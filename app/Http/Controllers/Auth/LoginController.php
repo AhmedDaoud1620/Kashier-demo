@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShoppingSession;
 use App\Providers\RouteServiceProvider;
+use App\Services\CartService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    protected function authenticated(Request $request, $user)
+    {
+        // stuff to do after user logs in
+        $cartService = new CartService();
+        session(['shoppingCart' => []]);
+        $shoppingSession = $user->shoppingSessions()->first();
+        session(['shoppingCart' => []]);
+       $cartItems =  $shoppingSession->cartItems()->get();
+        if($cartItems){
+            foreach ($cartItems as $cartItem){
+                $product = $cartItem->product()->first();
+                $cartService->addToCart($product->id, $cartItem->quantity);
+            }
+        }
+
     }
 }

@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 Auth::routes();
+//Route::group(['middleware' => 'createSessionCart'], function()
+//{
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
+    Route::get('/cart',  [\App\Http\Controllers\CartController::class, 'index'])->name('cart');
+    Route::post('/addtocart',  [\App\Http\Controllers\CartController::class, 'addToCart'])->name('addToCart');
+    Route::post('/removefromcart',  [\App\Http\Controllers\CartController::class, 'removeFromCart'])->name('removeFromCart');
+    Route::post('/reducequantity',  [\App\Http\Controllers\CartController::class, 'changeQuantity'])->name('changeQuantity');
+    Route::get('/checkout',  [\App\Http\Controllers\CheckOutController::class, 'index'])->name('checkout');
+//});
 
-Route::get('/cart',  [\App\Http\Controllers\CartController::class, 'index']);

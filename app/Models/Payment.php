@@ -13,7 +13,7 @@ class Payment extends Model
         'amount',
         'provider',
         'status',
-        'rebay_link',
+        'prepay_link',
     ];
 
     public function orders()
