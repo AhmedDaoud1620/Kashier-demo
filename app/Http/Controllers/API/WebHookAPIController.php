@@ -31,7 +31,7 @@ class WebHookAPIController extends Controller
                 http_response_code(200);
                 if ($event == 'pay' && $json_data['data']['status'] == 'SUCCESS'){
                     $order = Order::where('order_merchant_id', $json_data['data']['merchantOrderId'])->first();
-                    $order->payment->status = 'payed';
+                    $order->payment->status = 'paid';
                     $order->payment->transaction_id = $json_data['data']['transactionId'];
                     $order->payment->save();
                 }
