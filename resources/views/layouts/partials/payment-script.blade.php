@@ -11,6 +11,7 @@
     data-mode="{{env('MODE')}}"
     data-allowedMethods="card,wallet,fawry"
     data-defaultMethod="{{$orderPaymentMethod}}"
+    data-paymentRequestId="{{$inviceId}}"
     data-failureRedirect="TRUE"
     data-type="external"
     data-display="en"

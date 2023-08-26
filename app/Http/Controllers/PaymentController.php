@@ -15,7 +15,7 @@ class PaymentController extends Controller
         $order= Order::where('id', $orderId)->first();
         $orderHash= Hashing::generateKashierOrderHash($order);
 
-        return view('payment',['orderAmount'=> $order->total,'orderHash'=> $orderHash,'orderCurrency'=> $order->currency,'orderId'=> $order->order_merchant_id,'orderPaymentMethod'=> $order->payment_method]);
+        return view('payment',['orderAmount'=> $order->total,'orderHash'=> $orderHash,'orderCurrency'=> $order->currency,'orderId'=> $order->order_merchant_id,'orderPaymentMethod'=> $order->payment_method, 'inviceId'=> $order->payment->invoice_kash_id]);
     }
 
     public function paymentSuccess()
