@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WebHookAPIController extends Controller
 {
@@ -23,10 +24,10 @@ class WebHookAPIController extends Controller
                 $data[$key] = $data_obj[$key];
             }
             $queryString = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
-            $signature = hash_hmac('sha256', $queryString, env('KASHIER_SECRET_KEY'), false);
+            $signature = hash_hmac('sha256', $queryString, env('KASHIER_PUBLIC_KEY'), false);
 
             if ($signature === $kashierSignature) {
-
+                Log::info("payment success");
                 return response();
             } else {
                 return response('Invalid signature', 403);

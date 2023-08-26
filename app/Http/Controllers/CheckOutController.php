@@ -64,6 +64,7 @@ class CheckOutController extends Controller
         $invoice =  $kashier->CreateInvoice($order);
         $payment = $this->createPayment($invoice);
         $order->payment_id = $payment;
+        $order->order_merchant_id = $invoice->_id;
         $order->save();
         $cart = new CartService();
         $cart->destroyCart();

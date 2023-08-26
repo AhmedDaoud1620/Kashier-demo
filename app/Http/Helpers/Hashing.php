@@ -12,7 +12,7 @@ class Hashing
         $mid = env('KASHIER_MERCHANT_ID');
         $amount = $order->total;
         $currency = $order->currency;
-        $orderId = $order->id;
+        $orderId = $order->order_merchant_id;
         $secret = env('KASHIER_PUBLIC_KEY');
 
         $path = "/?payment=".$mid.".".$orderId.".".$amount.".".$currency;

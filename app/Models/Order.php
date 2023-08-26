@@ -19,7 +19,8 @@ class Order extends Model
         'email',
         'full_name',
         'payment_method',
-        'currency'
+        'currency',
+        'order_merchant_id'
     ];
 
     public function user()
