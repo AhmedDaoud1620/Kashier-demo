@@ -10,6 +10,7 @@ class WebHookAPIController extends Controller
 {
     public function kashierHook(Request $request)
     {
+        Log::info("payment success");
         if ($request->isMethod('post')) {
             $raw_payload = $request->getContent();
             $json_data = json_decode($raw_payload, true);
@@ -27,7 +28,6 @@ class WebHookAPIController extends Controller
             $signature = hash_hmac('sha256', $queryString, env('KASHIER_PUBLIC_KEY'), false);
 
             if ($signature === $kashierSignature) {
-                Log::info("payment success");
                 return response();
             } else {
                 return response('Invalid signature', 403);
