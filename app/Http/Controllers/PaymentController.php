@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\Hashing;
+use App\Http\Helpers\VerifySignature;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -20,6 +21,10 @@ class PaymentController extends Controller
 
     public function paymentSuccess()
     {
+        $isSignaturValid = VerifySignature::verifyRedirectSignature();
+        if (!$isSignaturValid){
+            abort(403, 'Invalid redirection');
+        }
         return view('success');
     }
 }
