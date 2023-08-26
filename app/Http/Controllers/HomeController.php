@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -19,6 +20,9 @@ class HomeController extends Controller
 
     public function index()
     {
+        if(Auth::user() && Auth::user()->role == 'admin'){
+            return redirect()->route('orders');
+        }
         $products = Product::all();
         return view('home', ['products' => $products]);
     }

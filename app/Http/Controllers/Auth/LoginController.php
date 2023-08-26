@@ -42,6 +42,9 @@ class LoginController extends Controller
     }
     protected function authenticated(Request $request, $user)
     {
+        if ($user->role == 'admin'){
+           return redirect()->route('orders');
+        }
         // stuff to do after user logs in
         $cartService = new CartService();
         session(['shoppingCart' => []]);

@@ -10,8 +10,16 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $userRole = Auth::user()->role;
         $userId = Auth::user()->id;
-        $orders = Order::where('user_id', $userId)->get();
+        $orders = '';
+        if ($userRole == 'admin'){
+            $orders = Order::all();
+        }
+        else{
+            $orders = Order::where('user_id', $userId)->get();
+        }
+
         return view('orders', ['orders'=>$orders]);
     }
 }

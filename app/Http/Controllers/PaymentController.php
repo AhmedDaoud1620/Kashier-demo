@@ -17,7 +17,7 @@ class PaymentController extends Controller
         $orderHash= Hashing::generateKashierOrderHash($order);
         $order->payment->prepay_link = $this->createPrepayUrl($order, $orderHash);
         $order->payment->save();
-        return view('payment',['orderAmount'=> $order->total,'orderHash'=> $orderHash,'orderCurrency'=> $order->currency,'orderId'=> $order->order_merchant_id,'orderPaymentMethod'=> $order->payment_method, 'inviceId'=> $order->payment->invoice_kash_id]);
+        return view('payment',['orderAmount'=> $order->total,'orderHash'=> $orderHash,'orderCurrency'=> $order->currency,'orderId'=> $order->order_merchant_id,'orderPaymentMethod'=> $order->payment_method, 'inviceId'=> $order->payment->invoice_kash_id, 'orderItems'=>$order->orderItems]);
     }
 
     public function paymentSuccess()

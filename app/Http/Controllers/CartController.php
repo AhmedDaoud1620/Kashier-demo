@@ -23,6 +23,9 @@ class CartController extends Controller
 
     public function index()
     {
+        if(Auth::user() && Auth::user()->role == 'admin'){
+            return redirect()->route('orders');
+        }
         $total = 0;
         $items = session('shoppingCart',[]);
         if(count($items) > 0){
