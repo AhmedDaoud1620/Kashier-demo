@@ -30,35 +30,32 @@ class Kashier
         $body = [
             "paymentType" => "professional",
             "merchantId"=> $this->merchantId,
-            "customerName"=> $order->user()->name,
+            "customerName"=> $order->full_name,
             "dueDate"=>Carbon::now()->addDay()->format('Y-m-d\TH:i:s.u\Z'),
             "isSuspendedPayment"=>true,
-            "description"> "order from Kashier Demo",
-            "invoiceReferenceId"> $order->id,
-            "invoiceItems"=> $order->orderItems()->map(function ($item) {
+            "description"=> "order from Kashier Demo",
+            "invoiceReferenceId"=> $order->id,
+            "invoiceItems"=> $order->orderItems->map(function ($item) {
                 return [
-                    'description' => $item->product()->description,
+                    'description' => $item->product->description,
                     'quantity' => $item->quantity,
-                    'itemName' => $item->product()->name,
-                    'unitPrice' => $item->product()->price,
-                    'subTotal' => $item->product()->price * $item->quantity,
+                    'itemName' => $item->product->name,
+                    'unitPrice' => $item->product->price,
+                    'subTotal' => $item->product->price * $item->quantity,
                 ];
             }),
             "state"=> "submitted",
             "currency"=> $this->currency
-
         ];
         $url = $this->baseUrl . '/paymentRequest/?currency='. $this->currency;
-
         $response = NetworkCalls::apiPost($url, $body, $this->headers);
         $resBody =json_decode($response->getBody());
         //TODO handle errors and return the valid data from api
         if($response->status() != 200){
-            throw new \Exception($resBody->title . 'This is Idf3 response with code' . $response->status(), 1);
+            throw new \Exception($resBody->message , 1);
         }
 
-
-        return $resBody->walletAccount->publicAddress;
+        return $resBody->response;
     }
     public function ShareInvoiceByEmail(Order $order)
     {

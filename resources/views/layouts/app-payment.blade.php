@@ -21,6 +21,6 @@
 @include('layouts.partials.scripts')
 <!-- Scripts -->
 </body>
-@include('layouts.partials.payment-script')
+
 </html>
 

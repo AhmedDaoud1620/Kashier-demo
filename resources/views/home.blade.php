@@ -23,6 +23,7 @@ $pageTitle = 'Kashier Demo'
                                 <button class="counter-btn increment" type="button">+</button>
                             </div>
                             <input type="hidden" id="product" name="product" value="{{$product->id}}">
+                            <input type="hidden" id="product" name="product_price" value="{{$product->price}}">
 
                         </form>
 

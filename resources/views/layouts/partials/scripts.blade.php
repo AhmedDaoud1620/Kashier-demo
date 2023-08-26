@@ -10,10 +10,10 @@
             }
             input.val(value);
             if($(this).hasClass('decrease-c')){
-                $('#post-type').val('decrease')
+                $('.post-type').val('decrease')
             }
             if($(this).hasClass('increase-c')){
-                $('#post-type').val('increase')
+                $('.post-type').val('increase')
             }
 
         });

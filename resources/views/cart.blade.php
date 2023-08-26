@@ -12,23 +12,25 @@ $pageTitle = 'Cart'
                 <div class="cart-items">
                     @foreach( $items as $key =>$cartItem)
                     <div class="card mb-2">
-                        <div class="card-body">
+                        <div class="card-body d-flex justify-content-between">
                             <h5 class="card-title">{{$cartItem['itemName']}}</h5>
                             <p class="card-text">Price: {{$cartItem['unitPrice']}}</p>
                             <form action="{{route('changeQuantity')}}" method="post" class="d-flex justify-content-between">
                                 @csrf
-                                <input type="hidden" id="post-type" name="type">
+                                <input type="hidden" class="post-type" name="type">
                                 <div class="counter">
                                     <button class="counter-btn decrement decrease-c">-</button>
                                     <input type="number" class="counter-input" value="{{$cartItem['quantity']}}" min="1" name="quantity" readonly>
                                     <button class="counter-btn increment increase-c">+</button>
                                 </div>
                                 <input type="hidden" id="product" name="product" value="{{$cartItem['productId']}}">
+                                <input type="hidden" id="product" name="product_price" value="{{$cartItem['unitPrice']}}">
 
                             </form>
-                            <form action="{{route('removeFromCart')}}" method="post" class="d-flex justify-content-between mt-2">
+                            <form action="{{route('removeFromCart')}}" method="post" class="d-flex justify-content-between">
                                 @csrf
                                 <input type="hidden" id="product" name="product" value="{{$cartItem['productId']}}">
+                                <input type="hidden" id="product" name="product_total_price" value="{{$cartItem['subTotal']}}">
                                 <button class="btn btn-danger remove-btn" type="submit">Remove</button>
 
                             </form>

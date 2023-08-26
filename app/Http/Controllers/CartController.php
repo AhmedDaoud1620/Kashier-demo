@@ -37,17 +37,22 @@ class CartController extends Controller
     public function addToCart(CartService $cartService, Request $request)
     {
         if(Auth::user()){
-            $shoppingSessionId = Auth::user()->shoppingSessions()->first()->id;
-            $cartItem =  CartItem::where(['shopping_session_id'=> $shoppingSessionId, 'product_id' => $request->product])->first();
+            $shoppingSession = Auth::user()->shoppingSessions()->first();
+            $cartItem =  CartItem::where(['shopping_session_id'=> $shoppingSession->id, 'product_id' => $request->product])->first();
             if($cartItem){
                 $cartItem->quantity += $request->quantity;
+                $shoppingSession->total += $request->product_price * $request->quantity;
+                $cartItem->save();
+                $shoppingSession->save();
             }
             else{
                 CartItem::create([
-                    'shopping_session_id' => $shoppingSessionId,
+                    'shopping_session_id' => $shoppingSession->id,
                     'product_id' => $request->product,
                     'quantity' => $request->quantity
                 ]);
+                $shoppingSession->total += $request->product_price * $request->quantity;
+                $shoppingSession->save();
             }
 
         }
@@ -58,8 +63,10 @@ class CartController extends Controller
     public function removeFromCart(CartService $cartService, Request $request)
     {
         if(Auth::user()){
-            $shoppingSessionId = Auth::user()->shoppingSessions()->first()->id;
-            CartItem::where(['shopping_session_id'=> $shoppingSessionId, 'product_id' => $request->product])->delete();
+            $shoppingSession = Auth::user()->shoppingSessions()->first();
+            CartItem::where(['shopping_session_id'=> $shoppingSession->id, 'product_id' => $request->product])->delete();
+            $shoppingSession->total -= $request->product_total_price;
+            $shoppingSession->save();
 
         }
         $cartService->removeFromCart($request->product);
@@ -69,24 +76,32 @@ class CartController extends Controller
     public function changeQuantity(CartService $cartService, Request $request)
     {
         if(Auth::user()){
-            $shoppingSessionId = Auth::user()->shoppingSessions()->first()->id;
-            $cartItem =  CartItem::where(['shopping_session_id'=> $shoppingSessionId, 'product_id' => $request->product])->first();
+            $shoppingSession = Auth::user()->shoppingSessions()->first();
+            $cartItem =  CartItem::where(['shopping_session_id'=> $shoppingSession->id, 'product_id' => $request->product])->first();
             if($cartItem){
                 if($request->type == 'increase'){
                     $cartItem->quantity += 1;
+                    $shoppingSession->total += $request->product_price;
                 }
                 else {
                     $cartItem->quantity -= 1;
+                    $shoppingSession->total -= $request->product_price;
 
                 }
                 $cartItem->save();
+                $shoppingSession->save();
+                if($cartItem->quantity == 0){
+                    $cartItem->delete();
+                }
             }
             else{
                 CartItem::create([
-                    'shopping_session_id' => $shoppingSessionId,
+                    'shopping_session_id' => $shoppingSession->id,
                     'product_id' => $request->product,
                     'quantity' => $request->quantity
                 ]);
+                $shoppingSession->total += $request->product_price;
+                $shoppingSession->save();
             }
 
         }
