@@ -13,6 +13,6 @@
     data-defaultMethod="{{$orderPaymentMethod}}"
     data-paymentRequestId="{{$inviceId}}"
     data-failureRedirect="TRUE"
-    data-type="external"
+    data-type="paymentRequest"
     data-display="en"
 ></script>
