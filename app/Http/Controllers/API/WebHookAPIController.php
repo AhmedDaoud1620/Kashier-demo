@@ -11,28 +11,33 @@ class WebHookAPIController extends Controller
     public function kashierHook(Request $request)
     {
         Log::info("payment success");
-        if ($request->isMethod('post')) {
-            $raw_payload = $request->getContent();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $raw_payload = file_get_contents('php://input');
             $json_data = json_decode($raw_payload, true);
             $data_obj = $json_data['data'];
             $event = $json_data['event'];
             sort($data_obj['signatureKeys']);
-            $headers = $request->header();
+            $headers = getallheaders();
+            // Lower case all keys
             $headers = array_change_key_case($headers);
             $kashierSignature = $headers['x-kashier-signature'];
             $data = [];
             foreach ($data_obj['signatureKeys'] as $key) {
                 $data[$key] = $data_obj[$key];
             }
-            $queryString = http_build_query($data, '', '&', PHP_QUERY_RFC3986);
-            $signature = hash_hmac('sha256', $queryString, env('KASHIER_PUBLIC_KEY'), false);
-
-            if ($signature === $kashierSignature) {
-                return response();
+            $queryString = http_build_query($data, $numeric_prefix = "", $arg_separator = '&', $encoding_type = PHP_QUERY_RFC3986);
+            $signature = hash_hmac('sha256', $queryString, env('KASHIER_PUBLIC_KEY'), false);;
+            if ($signature == $kashierSignature) {
+                Log::info('correct signture, send res 200 for  transaction');
+                echo 'valid signature';
+                http_response_code(200);
             } else {
-                return response('Invalid signature', 403);
+                echo 'invalid signature';
+                die();
             }
         }
+
 
     }
 }
