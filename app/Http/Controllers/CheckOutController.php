@@ -26,6 +26,9 @@ class CheckOutController extends Controller
 
     public function index()
     {
+        if(!isset($_SERVER['HTTP_REFERER'])){
+            abort(403, 'Access denied');
+        }
         $fullName = '';
         $email = '';
         $phone= '';

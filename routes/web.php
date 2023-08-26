@@ -23,8 +23,8 @@ Auth::routes();
     Route::post('/addtocart',  [\App\Http\Controllers\CartController::class, 'addToCart'])->name('addToCart');
     Route::post('/removefromcart',  [\App\Http\Controllers\CartController::class, 'removeFromCart'])->name('removeFromCart');
     Route::post('/reducequantity',  [\App\Http\Controllers\CartController::class, 'changeQuantity'])->name('changeQuantity');
-    Route::get('/checkout',  [\App\Http\Controllers\CheckOutController::class, 'index'])->name('checkout');
+    Route::get('/checkout',  [\App\Http\Controllers\CheckOutController::class, 'index'])->name('checkout')->middleware('redirectOnly');
     Route::post('/placeorder',  [\App\Http\Controllers\CheckOutController::class, 'createOrder'])->name('placeOrder');
-    Route::get('/paynow',  [\App\Http\Controllers\PaymentController::class, 'index'])->name('payment');
-    Route::get('/payment-success',  [\App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('success');
+    Route::get('/paynow',  [\App\Http\Controllers\PaymentController::class, 'index'])->name('payment')->middleware('redirectOnly');
+    Route::get('/payment-success',  [\App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('success')->middleware('redirectOnly');
 

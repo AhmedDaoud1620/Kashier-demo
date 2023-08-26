@@ -20,6 +20,7 @@ class PaymentController extends Controller
     }
 
     public function paymentSuccess()
+
     {
         $isSignaturValid = VerifySignature::verifyRedirectSignature();
         if (!$isSignaturValid){
