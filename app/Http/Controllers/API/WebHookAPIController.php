@@ -29,10 +29,10 @@ class WebHookAPIController extends Controller
             $signature = hash_hmac('sha256', $queryString, env('KASHIER_PUBLIC_KEY'), false);;
             if ($signature == $kashierSignature) {
                 http_response_code(200);
-                if ($event == 'pay' && $json_data['status'] == 'SUCCESS'){
-                    $order = Order::where('order_merchant_id', $json_data['merchantOrderId'])->first();
+                if ($event == 'pay' && $json_data['data']['status'] == 'SUCCESS'){
+                    $order = Order::where('order_merchant_id', $json_data['data']['merchantOrderId'])->first();
                     $order->payment->status = 'payed';
-                    $order->payment->transaction_id = $json_data['transactionId'];
+                    $order->payment->transaction_id = $json_data['data']['transactionId'];
                     $order->payment->save();
                 }
             } else {
