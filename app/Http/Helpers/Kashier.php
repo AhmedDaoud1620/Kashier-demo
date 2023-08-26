@@ -34,7 +34,7 @@ class Kashier
             "dueDate"=>Carbon::now()->addDay()->format('Y-m-d\TH:i:s.u\Z'),
             "isSuspendedPayment"=>true,
             "description"=> "order from Kashier Demo",
-            "invoiceReferenceId"=> $order->id,
+            "invoiceReferenceId"=> $order->invoice_reference_id,
             "invoiceItems"=> $order->orderItems->map(function ($item) {
                 return [
                     'description' => $item->product->description,

@@ -20,7 +20,8 @@ class Order extends Model
         'full_name',
         'payment_method',
         'currency',
-        'order_merchant_id'
+        'order_merchant_id',
+        'invoice_reference_id'
     ];
 
     public function user()

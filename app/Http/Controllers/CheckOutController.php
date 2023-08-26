@@ -10,6 +10,7 @@ use App\Models\Payment;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CheckOutController extends Controller
 {
@@ -56,13 +57,13 @@ class CheckOutController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'payment_method' => $request->paymentMethod,
-            'currency' => env('CURRENCY')
+            'currency' => env('CURRENCY'),
+            'invoice_reference_id'=> Str::uuid()->toString()
         ]);
         $this->createOrderItems($order->id);
 
         $kashier = new Kashier(env('CURRENCY'), 'en');
         $invoice =  $kashier->CreateInvoice($order);
-        dd($invoice);
         $payment = $this->createPayment($invoice);
         $order->payment_id = $payment;
         $order->order_merchant_id = $invoice->_id;
