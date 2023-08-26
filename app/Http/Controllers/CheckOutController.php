@@ -62,6 +62,7 @@ class CheckOutController extends Controller
 
         $kashier = new Kashier(env('CURRENCY'), 'en');
         $invoice =  $kashier->CreateInvoice($order);
+        dd($invoice);
         $payment = $this->createPayment($invoice);
         $order->payment_id = $payment;
         $order->order_merchant_id = $invoice->_id;
