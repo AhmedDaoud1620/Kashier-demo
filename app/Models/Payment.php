@@ -15,6 +15,7 @@ class Payment extends Model
         'status',
         'prepay_link',
         'invoice_kash_id',
+        'transaction_id'
     ];
 
     public function orders()
