@@ -97,34 +97,11 @@ class CheckOutController extends Controller
             'provider' => 'Kashier',
             'status' => $invoice->paymentStatus,
             'invoice_kash_id' => $invoice->paymentRequestId,
-            'prepay_link' => $this->createPrepayUrl($invoice),
 
         ]);
         return $payment->id;
     }
 
-    public function createPrepayUrl($invoice)
-    {
-        $baseUrl = env('SUB_DOMAIN_URL');
-        $merchantId = env('KASHIER_MERCHANT_ID');
-        $orderId = $invoice->_id;
-        $amount = $invoice->totalAmount;
-        $currency = $invoice->currency;
-        $mode= env('MODE');
-        $merchantRedirect = route('success');
-        $webhook = route('paidWebHook');
-        $paymentRequestId = $invoice->paymentRequestId;
-        $allowedMethods = "card,wallet,fawry";
-        $failureRedirect = "TRUE";
-        $display = "en";
-        $order = [
-            'total' => $amount,
-            'currency' => $currency,
-            'order_merchant_id' => $orderId,
-        ];
-        $hash = Hashing::generateKashierOrderHash($order);
 
-        return $baseUrl.'/?merchantId='.$merchantId.'&orderId=' .$orderId.'&amount='.$amount.'&currency='.$currency.'&hash='.$hash.'&mode='.$mode.'&merchantRedirect='.$merchantRedirect.'&serverWebhook='.$webhook.'&paymentRequestId='.$paymentRequestId.'&allowedMethods='.$allowedMethods.'&failureRedirect='.$failureRedirect.'&display='. $display;
-    }
 
 }
