@@ -13,7 +13,7 @@ class Hashing
         $amount = $order->total;
         $currency = $order->currency;
         $orderId = $order->id;
-        $secret = env('KASHIER_SECRET_KEY');
+        $secret = env('KASHIER_PUBLIC_KEY');
 
         $path = "/?payment=".$mid.".".$orderId.".".$amount.".".$currency;
         $hash = hash_hmac( 'sha256' , $path , $secret ,false);
