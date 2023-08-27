@@ -14,10 +14,10 @@ class OrderController extends Controller
         $userId = Auth::user()->id;
         $orders = '';
         if ($userRole == 'admin'){
-            $orders = Order::all();
+            $orders = Order::orderBy("created_at", 'desc')->get();
         }
         else{
-            $orders = Order::where('user_id', $userId)->get();
+            $orders = Order::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
         }
 
         return view('orders', ['orders'=>$orders]);
