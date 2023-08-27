@@ -94,6 +94,6 @@ The application will be available at
 
 `http://localhost:8000`.
 
-##License
+## License
 
 Laravel Cashier is open-sourced software licensed under the [MIT license](https://github.com/laravel/cashier-stripe/blob/14.x/LICENSE.md).
