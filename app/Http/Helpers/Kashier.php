@@ -50,7 +50,6 @@ class Kashier
         $url = $this->baseUrl . '/paymentRequest/?currency='. $this->currency;
         $response = NetworkCalls::apiPost($url, $body, $this->headers);
         $resBody =json_decode($response->getBody());
-        //TODO handle errors and return the valid data from api
         if($response->status() != 200){
             throw new \Exception($resBody->message , 1);
         }
@@ -73,29 +72,10 @@ class Kashier
 
         $response = NetworkCalls::apiPost($url, $body, $this->headers);
         $resBody =json_decode($response->getBody());
-        //TODO handle errors and return the valid data from api
         if($response->status() != 200){
-            throw new \Exception($resBody->title . 'This is Idf3 response with code' . $response->status(), 1);
+            throw new \Exception($resBody->message , 1);
         }
 
-
-        return $resBody->walletAccount->publicAddress;
-    }
-    public function GetInvoiceInfo($invoiceId)
-    {
-        $url = $this->baseUrl . '/paymentRequest/'. $invoiceId;
-        $queryParams = ['currency' => $this->currency];
-
-
-        $response = NetworkCalls::apiGet($url, $queryParams, $this->headers);
-        $resBody =json_decode($response->getBody());
-        //TODO handle errors and return the valid data from api
-
-        if($response->status() != 200){
-            throw new \Exception($resBody->title . 'This is Idf3 response with code' . $response->status(), 1);
-        }
-
-
-        return $resBody->walletAccount->publicAddress;
+        return $resBody->response;
     }
 }

@@ -1,64 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Kashier integration Demo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This repository contains a Kashier integration Demo. It includes the following features and components:
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Feature 1: Simple Ui of a demo store that contain product, cart, order, and user modules.
+  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Feature 2: Authenticated users and guests can place orders.
+  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Feature 3: Checkout component that's fully integrated with Kashier payment ui.
+  
 
-## Learning Laravel
+- Feature 4: Webhook implementation to sync orders status with Kashier transactions.
+  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Feature 5: Signature validation to ensure that requests aren't tampered with
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-## Laravel Sponsors
+- PHP 7.4 or higher
+- Composer
+-  MySQL 8 or higher
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Installation
 
-### Premium Partners
+1. Clone the repository to your local machine:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+   ```bash
+   git clone https://github.com/AhmedDaoud1620/Kashier-demo.git
+   ```
 
-## Contributing
+2. Navigate to the project directory:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   cd kashier_integration
+   ```
+3. Install the project dependencies using Composer:
 
-## Code of Conduct
+   ```bash
+   composer install
+   ```
+4. Create a copy of the .env.example file and rename it to .env:
+   
+   ```bash
+   cp .env.example .env
+   ```
+5. Generate an application key:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   php artisan key:generate
+   ```
+   
+6. Configure the database connection in the .env file with your database credentials:
 
-## Security Vulnerabilities
+   ```dotenv
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=your_database_name #don't forget to create a db with that name
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+7. Configure Kashier information in .env file with your Kashier credentials:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```dotenv
+    KASHIER_BASE_URL=https://test-api.kashier.io
+    CURRENCY=your_prefered_currency
+    KASHIER_PUBLIC_KEY=your_kashier_account_public_key
+    KASHIER_SECRET_KEY=your_kashier_account_secret_key
+    SUB_DOMAIN_URL=https://checkout.kashier.io
+    KASHIER_MERCHANT_ID=your-Kashier-merchantId
+    STORE_NAME=your_store_name
+    MODE=mode:_either_test_or_live
+    ```   
+8. Run the database migrations :
+   
+   ```bash
+   php artisan migrate
+   ```
+9. Seed the database: 
+   
+   ```bash
+   php artisan db:seed
+   ```
+10. Start the development server:
 
-## License
+    ```bash
+    php artisan serve
+    ```
+The application will be available at 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+`http://localhost:8000`.
+
+##License
+
+Laravel Cashier is open-sourced software licensed under the [MIT license](https://github.com/laravel/cashier-stripe/blob/14.x/LICENSE.md).
