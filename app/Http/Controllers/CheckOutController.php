@@ -90,7 +90,6 @@ class CheckOutController extends Controller
             return redirect()->route('payment')->with('orderId', $order->id);
 
         }catch (\Exception $e) {
-            throw new \Exception($e);
             DB::rollback();
             return view('error');
         }
