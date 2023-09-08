@@ -96,4 +96,4 @@ The application will be available at
 
 ## License
 
-Laravel Cashier is open-sourced software licensed under the [MIT license](https://github.com/laravel/cashier-stripe/blob/14.x/LICENSE.md).
+Kashier Demo is open-sourced software licensed under the [MIT license](https://github.com/laravel/cashier-stripe/blob/14.x/LICENSE.md).

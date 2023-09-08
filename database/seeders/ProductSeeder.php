@@ -26,7 +26,7 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Product 2',
                 'description' => 'An itsy-bitsy Description for Product 2',
-                'price' => 1200.99,
+                'price' => 1200.50,
                 'image' => 'https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 'created_at' => now(),
                 'updated_at' => now(),

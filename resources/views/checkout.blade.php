@@ -12,9 +12,9 @@ $pageTitle = 'Check out'
             <label for="fullName">Full Name</label>
             <input type="text" class="form-control" id="fullName" name="fullName" value="{{$name}}" required>
         </div>
-        <div class="form-group">
+        <div class="form-group required">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{$email}}">
+            <input type="email" class="form-control" id="email" name="email" value="{{$email}}" required>
         </div>
         <div class="form-group required">
             <label for="address">Phone</label>

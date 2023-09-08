@@ -26,7 +26,6 @@ class Kashier
 
     public function CreateInvoice(Order $order)
     {
-
         $body = [
             "paymentType" => "professional",
             "merchantId"=> $this->merchantId,
@@ -61,10 +60,10 @@ class Kashier
 
         $body = [
             "subDomainUrl"=> env('SUB_DOMAIN_URL'),
-            "urlIdentifier"=> $order->payment()->invoice_id,
-            "customerName"=> $order->user()->name,
+            "urlIdentifier"=> $order->payment->invoice_kash_id,
+            "customerName"=> $order->full_name,
             "storeName"=> env('STORE_NAME'),
-            "customerEmail"=> $order->user()->email,
+            "customerEmail"=> $order->email,
             "language"=> $this->lang,
             "operation"=> "email"
         ];
@@ -75,7 +74,5 @@ class Kashier
         if($response->status() != 200){
             throw new \Exception($resBody->message , 1);
         }
-
-        return $resBody->response;
     }
 }

@@ -7,6 +7,7 @@ $pageTitle = 'Orders'
     <div class="container">
         @if(count($orders) > 0)
             @foreach($orders as $order)
+                @if($order->payment)
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Order Details</h5>
@@ -18,6 +19,7 @@ $pageTitle = 'Orders'
                         @endif
                     </div>
                 </div>
+                @endif
             @endforeach
         @else
             <div class="mx-auto mt-3 w-75 d-flex flex-column align-items-center justify-content-center">

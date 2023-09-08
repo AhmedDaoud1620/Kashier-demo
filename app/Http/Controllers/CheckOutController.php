@@ -12,6 +12,7 @@ use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class CheckOutController extends Controller
 {
@@ -30,6 +31,8 @@ class CheckOutController extends Controller
         if(!isset($_SERVER['HTTP_REFERER'])){
             abort(403, 'Access denied');
         }
+        if(count(session('shoppingCart', [])) == 0)
+            return redirect('/');
         $fullName = '';
         $email = '';
         $phone= '';
@@ -43,38 +46,55 @@ class CheckOutController extends Controller
         return view('checkout', ['name'=>$fullName, 'email'=>$email, 'phone'=>$phone, 'address'=>$address]);
     }
 
-    public function createOrder(Request $request)
+    public function createOrder(Request $request, CartService $cart)
     {
-        $userId = Auth::user() ? Auth::user()->id : null;
-        $total = 0;
-        $orderItems = session('shoppingCart',[]);
-        if(count($orderItems) > 0){
-            foreach ($orderItems as $item){
-                $total += $item['subTotal'];
-            }
-        }
-        $order = Order::create([
-            'user_id' => $userId,
-            'total' => $total,
-            'address' => $request->address,
-            'full_name' => $request->fullName,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'payment_method' => $request->paymentMethod,
-            'currency' => env('CURRENCY'),
-            'invoice_reference_id'=> Str::uuid()->toString()
-        ]);
-        $this->createOrderItems($order->id);
+        if(count(session('shoppingCart', [])) == 0)
+            return redirect('/');
 
-        $kashier = new Kashier(env('CURRENCY'), 'en');
-        $invoice =  $kashier->CreateInvoice($order);
-        $payment = $this->createPayment($invoice);
-        $order->payment_id = $payment;
-        $order->order_merchant_id = $invoice->_id;
-        $order->save();
-        $cart = new CartService();
-        $cart->destroyCart();
-        return redirect()->route('payment')->with('orderId', $order->id);
+        try {
+            DB::beginTransaction();
+            $userId = Auth::user() ? Auth::user()->id : null;
+            $total = 0;
+            $orderItems = session('shoppingCart',[]);
+            if(count($orderItems) > 0){
+                foreach ($orderItems as $item){
+                    $total += $item['subTotal'];
+                }
+            }
+            $order = null;
+            $paymentId = null;
+            $order = Order::create([
+                'user_id' => $userId,
+                'total' => $total,
+                'address' => $request->address,
+                'full_name' => $request->fullName,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'payment_method' => $request->paymentMethod,
+                'currency' => env('CURRENCY'),
+                'invoice_reference_id'=> Str::uuid()->toString()
+            ]);
+            $this->createOrderItems($order->id);
+
+            $kashier = new Kashier(env('CURRENCY'), 'en');
+            $invoice =  $kashier->CreateInvoice($order);
+            $paymentId = $this->createPayment($invoice);
+            $order->payment_id = $paymentId;
+            $order->order_merchant_id = $invoice->_id;
+            $order->save();
+
+            DB::commit();
+            $cart->destroyCart();
+            if(!Auth::user())
+                $kashier->ShareInvoiceByEmail($order);
+            return redirect()->route('payment')->with('orderId', $order->id);
+
+        }catch (\Exception $e) {
+            throw new \Exception($e);
+            DB::rollback();
+            return view('error');
+        }
+
     }
 
     public function createOrderItems($orderId)

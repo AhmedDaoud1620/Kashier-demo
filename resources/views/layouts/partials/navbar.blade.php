@@ -1,3 +1,12 @@
+@php
+    $cartItems = session('shoppingCart', []);
+    $totalElements = 0;
+
+    foreach ($cartItems as $subArray) {
+        $totalElements += $subArray['quantity'];
+    }
+@endphp
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand mx-2" href="/">Kashier Store</a>
     <ul class="navbar-nav w-100 justify-content-around">
@@ -28,7 +37,12 @@
         @if(auth()->user()&& auth()->user()->role == 'admin')
             @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('cart') }}">Cart</a>
+                    <a class="nav-link" href="{{ route('cart') }}">
+                        <div class="position-relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge badge-danger">{{ $totalElements }}</span>
+                        </div>
+                    </a>
                 </li>
             @endif
     </ul>
