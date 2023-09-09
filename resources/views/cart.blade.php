@@ -12,7 +12,7 @@ $pageTitle = 'Cart'
                 <div class="cart-items">
                     @foreach( $items as $key =>$cartItem)
                     <div class="card mb-2">
-                        <div class="card-body d-flex justify-content-between">
+                        <div class="card-body d-flex flex-column flex-lg-row justify-content-between">
                             <h5 class="card-title">{{$cartItem['itemName']}}</h5>
                             <p class="card-text">Price: {{$cartItem['unitPrice']}}</p>
                             <form action="{{route('changeQuantity')}}" method="post" class="d-flex justify-content-between">
@@ -27,7 +27,7 @@ $pageTitle = 'Cart'
                                 <input type="hidden" id="product" name="product_price" value="{{$cartItem['unitPrice']}}">
 
                             </form>
-                            <form action="{{route('removeFromCart')}}" method="post" class="d-flex justify-content-between">
+                            <form action="{{route('removeFromCart')}}" method="post" class="d-flex justify-content-between mt-2 mt-lg-0">
                                 @csrf
                                 <input type="hidden" id="product" name="product" value="{{$cartItem['productId']}}">
                                 <input type="hidden" id="product" name="product_total_price" value="{{$cartItem['subTotal']}}">

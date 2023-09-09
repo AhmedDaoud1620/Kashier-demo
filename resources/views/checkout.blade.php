@@ -4,7 +4,7 @@ $pageTitle = 'Check out'
 @extends('layouts.app')
 
 @section('content')
-<div class="container-checkout">
+<div class="container-checkout mt-3">
     <h1>Checkout</h1>
     <form id="checkoutForm" action="{{route('placeOrder')}}" method="post">
         @csrf

@@ -19,6 +19,7 @@ Auth::routes();
 
     Route::get('/cart',  [\App\Http\Controllers\CartController::class, 'index'])->name('cart');
     Route::get('/orders',  [\App\Http\Controllers\OrderController::class, 'index'])->name('orders')->middleware('auth');
+    Route::get('/orderdetails/{id}',  [\App\Http\Controllers\OrderController::class, 'details'])->name('orderDetails')->middleware('auth');
     Route::post('/addtocart',  [\App\Http\Controllers\CartController::class, 'addToCart'])->name('addToCart');
     Route::post('/removefromcart',  [\App\Http\Controllers\CartController::class, 'removeFromCart'])->name('removeFromCart');
     Route::post('/reducequantity',  [\App\Http\Controllers\CartController::class, 'changeQuantity'])->name('changeQuantity');

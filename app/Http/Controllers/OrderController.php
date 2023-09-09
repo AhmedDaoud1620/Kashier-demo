@@ -22,4 +22,13 @@ class OrderController extends Controller
 
         return view('orders', ['orders'=>$orders]);
     }
+    public function details($id)
+    {
+        $order = Order::where('id', $id)->first();
+        if(!$order){
+            return view('error');
+        }
+
+        return view('invoice', ['order' => $order]);
+    }
 }

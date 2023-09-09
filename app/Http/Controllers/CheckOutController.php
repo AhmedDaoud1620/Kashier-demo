@@ -32,7 +32,7 @@ class CheckOutController extends Controller
             abort(403, 'Access denied');
         }
         if(count(session('shoppingCart', [])) == 0)
-            return redirect('/');
+            return view('error');
         $fullName = '';
         $email = '';
         $phone= '';
@@ -49,7 +49,7 @@ class CheckOutController extends Controller
     public function createOrder(Request $request, CartService $cart)
     {
         if(count(session('shoppingCart', [])) == 0)
-            return redirect('/');
+            return view('error');
 
         try {
             DB::beginTransaction();
